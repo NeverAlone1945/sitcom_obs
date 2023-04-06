@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('set_booking_time', function (Blueprint $table) {
             $table->id();
-            $table->string('branch_id');
+            $table->string('branch_code');
             $table->time('start_time');
             $table->time('end_time');
             $table->string('minute_distance');

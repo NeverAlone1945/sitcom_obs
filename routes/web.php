@@ -2,9 +2,10 @@
 
 use App\Models\Branch;
 use App\Models\Modeltype;
+use App\Models\SetBookingTime;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BookingController;
-use App\Models\SetBookingTime;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,12 +23,14 @@ use App\Models\SetBookingTime;
 // });
 
 Route::get('/online-booking', [BookingController::class, 'index'])->name('booking');
+Route::post('/online-booking', [BookingController::class, 'store'])->name('booking.store');
+
 Route::get('/getModel/{id}', function ($id) {
-    $model = Modeltype::select('code', 'description')->where('brandid', $id)->get();
+    $model = Modeltype::select('code', 'description')->where('brand_code', Crypt::decryptString($id))->get();
     return response()->json($model);
 });
 Route::get('/getBranch/{id}', function ($id) {
-    $branch = Branch::select('code', 'description')->where('cityid', $id)->get();
+    $branch = Branch::select('code', 'description')->where('city_code', Crypt::decryptString($id))->get();
     return response()->json($branch);
 });
 Route::get('/getAddress/{id}', function ($id) {
@@ -35,6 +38,6 @@ Route::get('/getAddress/{id}', function ($id) {
     return response()->json($address);
 });
 Route::get('/getSetTimeBooking/{id}', function ($id) {
-    $time = SetBookingTime::select('start_time', 'end_time', 'minute_distance')->where('branch_id', $id)->get();
+    $time = SetBookingTime::select('start_time', 'end_time', 'minute_distance')->where('branch_code', $id)->get();
     return response()->json($time);
 });
