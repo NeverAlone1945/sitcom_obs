@@ -24,6 +24,7 @@ use App\Http\Controllers\BookingController;
 
 Route::get('/online-booking', [BookingController::class, 'index'])->name('booking');
 Route::post('/online-booking', [BookingController::class, 'store'])->name('booking.store');
+Route::get('/booking-success/{id}', [BookingController::class, 'success'])->name('booking.success');
 
 Route::get('/getModel/{id}', function ($id) {
     $model = Modeltype::select('code', 'description')->where('brand_code', Crypt::decryptString($id))->get();

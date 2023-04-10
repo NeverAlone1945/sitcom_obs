@@ -74,8 +74,14 @@ class BookingController extends Controller
         $trx->branch_address = $branch->address;
         $trx->branch_phone = $branch->phone;
         $trx->booking_status = 'created';
+        $trx->email_sending_status = 'f';
         $trx->save();
 
-        return redirect()->route('booking')->with('success', 'Terimakasih telah melakukan Online Service Booking');
+        return redirect()->route('booking.success', ['id' => Crypt::encryptString($bookingNumber)]);
+    }
+
+    public function success($id)
+    {
+        return view('pages.guest.booking_success', ['title'=>'Booking Success']);
     }
 }

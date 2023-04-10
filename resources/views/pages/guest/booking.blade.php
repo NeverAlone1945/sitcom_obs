@@ -26,6 +26,16 @@
                                     {{ session('status') }}
                                 </div>
                             @endif
+
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
                             <h5 class="text-center">Online Service Booking</h5>
                             <form class="f1" action="{{ route('booking.store') }}" method="post"
                                 enctype="multipart/form-data">
