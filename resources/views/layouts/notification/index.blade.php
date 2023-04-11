@@ -20,7 +20,7 @@
         rel="stylesheet">
     <style type="text/css">
         body {
-            text-align: center;
+            /* text-align: center; */
             margin: 0 auto;
             width: 650px;
             font-family: work-Sans, sans-serif;

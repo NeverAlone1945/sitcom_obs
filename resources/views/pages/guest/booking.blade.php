@@ -1,4 +1,4 @@
-@extends('layouts.booking.index')
+@extends ('layouts.booking.index')
 
 @section('content')
     <div class="container-fluid p-0">
@@ -177,7 +177,7 @@
             // custom datepicker
             "use strict";
             $('.tanggal').datepicker({
-                language: 'id',
+                language: 'en',
                 minDate: new Date()
             });
 
@@ -271,63 +271,98 @@
         function getListTime() {
             var branchID = $('#branch').val();
             var tanggal = $('#tanggal').val();
+
+            var today = new Date();
+            var year = today.getFullYear();
+            var month = ('0' + (today.getMonth() + 1)).slice(-2);
+            var day = ('0' + today.getDate()).slice(-2);
+            var hari_ini = year + '-' + month + '-' + day;
+
+            var now = today.getHours();
             if (tanggal) {
                 $.ajax({
                     url: '/getSetTimeBooking/' + branchID,
                     type: "GET",
                     dataType: "json",
-                    success: function(data) {
-                        if (data) {
-                            $('.label-jam').show();
-                            $('.input-time').empty();
-                            $('.input-time').show();
-                            $.each(data, function(key, time) {
-                                let start_time = parseInt(time.start_time
-                                    .split(':')[
-                                        0], 10);
-                                let end_time = parseInt(time.end_time
-                                    .split(':')[
-                                        0], 10);
-                                let minute_distance = parseInt(time
-                                    .minute_distance);
-                                let jam = start_time;
-                                let menit = 0;
-                                let i = 0;
+                    success: function(setTime) {
 
-                                while (jam <= end_time) {
-                                    // tampilkan waktu saat ini
-                                    let time = ((jam < 10 ? '0' + jam : jam) + ':' + (menit < 10 ?
-                                        '0' + menit : menit));
-                                    console.log(time);
+                        if (setTime) {
+                            $.ajax({
+                                url: '/getTimeBooked/' + tanggal,
+                                type: "GET",
+                                dataType: "json",
+                                success: function(booked) {
+                                    // array untuk menyimpan jam yang sudah dipesan
+                                    var booked_times = [];
 
-                                    // tambahkan 30 menit pada waktu saat ini
-                                    menit += minute_distance;
-
-                                    // jika menit mencapai 60, reset ke 0 dan tambahkan 1 jam
-                                    if (menit === 60) {
-                                        menit = 0;
-                                        jam++;
+                                    // loop melalui data booking dan menambahkan waktu yang sudah dibooking ke array booked_times
+                                    for (var x = 0; x < booked.length; x++) {
+                                        booked_times.push(booked[x].booking_time);
                                     }
 
-                                    if (jam === end_time && menit > 0) {
-                                        break;
-                                    }
+                                    $('.label-jam').show();
+                                    $('.input-time').empty();
+                                    $('.input-time').show();
+                                    $.each(setTime, function(key, time) {
+                                        let start_time = parseInt(time.start_time.split(
+                                            ':')[0], 10);
+                                        let end_time = parseInt(time.end_time.split(':')[0],
+                                            10);
+                                        let minute_distance = parseInt(time
+                                            .minute_distance);
+                                        let jam = 0;
+                                        let menit = 0;
+                                        let i = 0;
 
-                                    let no = i++;
+                                        if (tanggal === hari_ini) {
+                                            jam += now + 1;
+                                        } else {
+                                            jam += start_time;
+                                        }
 
-                                    $('.input-time').append(
-                                        '<input type="radio" class="btn-check" name="jam" id="' +
-                                        no +
-                                        '" autocomplete="off" value="' + time +
-                                        '"><label class="btn btn-outline-dark" for="' +
-                                        no + '">' +
-                                        time + '</label>'
-                                    );
+                                        while (jam <= end_time) {
+
+                                            // tampilkan waktu saat ini
+                                            let time = ((jam < 10 ? '0' + jam : jam) + ':' +
+                                                (menit < 10 ?
+                                                    '0' + menit : menit));
+
+                                            // tambahkan jarak menit pada waktu saat ini
+                                            menit += minute_distance;
+
+                                            // jika menit mencapai 60, reset ke 0 dan tambahkan 1 jam
+                                            if (menit === 60) {
+                                                menit = 0;
+                                                jam++;
+                                            }
+
+                                            // jika sudah menjadi end_time maka looping berhenti
+                                            if (jam === end_time && menit > 0) {
+                                                break;
+                                            }
+
+                                            let no = i++;
+
+                                            // jika waktu tidak ada di booked_times, tambahkan sebagai opsi radio button
+                                            if (!booked_times.includes(time)) {
+                                                $('.input-time').append(
+                                                    '<input type="radio" class="btn-check" name="jam" id="' +
+                                                    no +
+                                                    '" autocomplete="off" value="' +
+                                                    time +
+                                                    '"><label class="btn btn-outline-dark" for="' +
+                                                    no + '">' +
+                                                    time + '</label>'
+                                                );
+                                            }
+                                        }
+                                    });
                                 }
                             });
                         }
                     }
                 });
+                // alert(now);
             }
         }
     </script>
