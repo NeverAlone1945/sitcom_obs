@@ -46,4 +46,7 @@ Route::controller(AjaxController::class)->group(function () {
     Route::get('/getAddress', 'getAddress');
     Route::get('/getSetTimeBooking', 'getSetTimeBooking');
     Route::get('/getTimeBooked', 'getTimeBooked');
+    Route::get('/getKota', 'getKota');
+    Route::get('/getKecamatan', 'getKecamatan');
+    Route::get('/getKelurahan', 'getKelurahan');
 });

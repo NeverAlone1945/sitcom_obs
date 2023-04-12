@@ -43,6 +43,7 @@
                                             <label class="col-form-label">Provinsi</label>
                                             <select class="js-example-basic-single col-sm-12" id="provinsi"
                                                 name="provinsi">
+                                                <option>-- Pilih Provinsi --</option>
                                                 @foreach ($listProvinsi as $item)
                                                     <option value="{{ $item->id }}">{{ $item->nama }}</option>
                                                 @endforeach
@@ -110,4 +111,24 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('script')
+    <script>
+        // inisialisasi javascript event handler
+        $(document).ready(function() {
+            $('#provinsi').on('change', function() {
+                getKota($(this).val());
+            });
+
+            $('#kota').on('change', function() {
+                getKecamatan($(this).val());
+            });
+
+            $('#kecamatan').on('change', function() {
+                getKelurahan($(this).val());
+            });
+        });
+    </script>
+    @include('scripts.wilayah')
 @endsection
