@@ -3,10 +3,12 @@
 use App\Models\Branch;
 use App\Models\Modeltype;
 use App\Models\SetBookingTime;
+use App\Models\TrxOnlineBooking;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AjaxController;
 use App\Http\Controllers\BookingController;
-use App\Models\TrxOnlineBooking;
+use App\Http\Controllers\RegisterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,32 +21,29 @@ use App\Models\TrxOnlineBooking;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+Route::get('/', function () {
+    return view('pages.guest.index');
+})->name('index');
 
-Route::get('/online-booking', [BookingController::class, 'index'])->name('booking');
-Route::post('/online-booking', [BookingController::class, 'store'])->name('booking.store');
-Route::get('/booking-success/{id}', [BookingController::class, 'success'])->name('booking.success');
-Route::get('/test-email', [BookingController::class, 'sendEmail'])->name('booking.mail');
 
-Route::get('/getModel/{id}', function ($id) {
-    $model = Modeltype::select('code', 'description')->where('brand_code', Crypt::decryptString($id))->get();
-    return response()->json($model);
+
+Route::controller(BookingController::class)->group(function () {
+    Route::get('/online-booking', 'index')->name('booking');
+    Route::post('/online-booking', 'store')->name('booking.store');
+    Route::get('/booking-success/{id}', 'success')->name('booking.success');
+    Route::get('/test-email', 'sendEmail')->name('testemail');
 });
-Route::get('/getBranch/{id}', function ($id) {
-    $branch = Branch::select('code', 'description')->where('city_code', Crypt::decryptString($id))->get();
-    return response()->json($branch);
+
+Route::controller(RegisterController::class)->group(function () {
+    Route::get('/register', 'index')->name('register');
+    Route::post('/register', 'store')->name('register.store');
+    Route::get('/register-success/{id}', 'success')->name('register.success');
 });
-Route::get('/getAddress/{id}', function ($id) {
-    $address = Branch::select('address')->where('code', $id)->get();
-    return response()->json($address);
-});
-Route::get('/getSetTimeBooking/{id}', function ($id) {
-    $time = SetBookingTime::select('start_time', 'end_time', 'minute_distance')->where('branch_code', $id)->get();
-    return response()->json($time);
-});
-Route::get('/getTimeBooked/{id}', function ($id) {
-    $booked = TrxOnlineBooking::select('booking_time')->where('booking_date', $id)->get();
-    return response()->json($booked);
+
+Route::controller(AjaxController::class)->group(function () {
+    Route::get('/getModel', 'getModel');
+    Route::get('/getBranch', 'getBranch');
+    Route::get('/getAddress', 'getAddress');
+    Route::get('/getSetTimeBooking', 'getSetTimeBooking');
+    Route::get('/getTimeBooked', 'getTimeBooked');
 });

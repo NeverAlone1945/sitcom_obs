@@ -101,7 +101,7 @@
 
 			.f1-progress-line {
 				height: 1px;
-				background: var(--theme-deafult);
+				background: var(--bs-danger);
 				width: 16%;
 			}
 		}
@@ -115,12 +115,12 @@
 			&.activated {
 				.f1-step-icon {
 					background: $white;
-					border: 1px solid var(--theme-deafult);
-					color: var(--theme-deafult);
+					border: 1px solid var(--bs-danger);
+					color: var(--bs-danger);
 				}
 
 				p {
-					color: var(--theme-deafult);
+					color: var(--bs-dark);
 				}
 			}
 
@@ -128,13 +128,13 @@
 				.f1-step-icon {
 					width: 48px;
 					height: 48px;
-					background: var(--theme-deafult);
+					background: var(--bs-danger);
 					font-size: 22px;
 					line-height: 20px;
 				}
 
 				p {
-					color: var(--theme-deafult);
+					color: var(--bs-dark);
 				}
 			}
 

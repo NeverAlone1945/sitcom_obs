@@ -1,18 +1,18 @@
-@extends ('layouts.booking.index')
-
+@extends ('layouts.main.index')
+@section('title', 'Online Service Booking')
 @section('content')
     <div class="container-fluid p-0">
         <div class="row">
             <div class="col-xl-5">
-                <img class="bg-img-cover bg-center" src="{{ asset('assets/images/login/4.png') }}" alt="mitracare">
+                <img class="bg-img-cover bg-center" src="{{ asset('assets/images/illustrasi/banner_booking.png') }}"
+                    alt="mitracare">
             </div>
-            <div class="col-xl-7 p-0">
+            <div class="col-xl-7">
                 <div class="login-card">
                     <div>
-                        <a class="logo" href="/"><img class="img-fluid for-light"
-                                src="{{ asset('assets/images/logo/mc-logo.png') }}" alt="looginpage"><img
-                                class="img-fluid for-dark" src="{{ asset('assets/images/logo/logo_dark.png') }}"
-                                alt="looginpage">
+                        <a class="logo" href="/">
+                            <img class="img-fluid for-light" src="{{ asset('assets/images/logo/mc-logo.png') }}"
+                                alt="mitracare">
                         </a>
                         <div class="login-main">
                             @if ($message = Session::get('success'))
@@ -50,12 +50,12 @@
                                         <p>Data Diri</p>
                                     </div>
                                     <div class="f1-step">
-                                        <div class="f1-step-icon"><i class="fa fa-mobile"></i></div>
+                                        <div class="f1-step-icon"><i class="fa fa-laptop"></i></div>
                                         <p>Perangkat</p>
                                     </div>
                                     <div class="f1-step">
                                         <div class="f1-step-icon"><i class="fa fa-calendar"></i></div>
-                                        <p>Jadwal Booking</p>
+                                        <p>Jadwal</p>
                                     </div>
                                 </div>
                                 <fieldset>
@@ -81,7 +81,8 @@
                                 <fieldset>
                                     <div class="mb-2">
                                         <label>Merk</label>
-                                        <select class="js-example-basic-single col-sm-12" id="brand" name="brand">
+                                        <select class="js-example-basic-single col-sm-12" id="brand" name="brand"
+                                            required="">
                                             <option value="">-- Pilih Merk --</option>
                                             @foreach ($brandList as $item)
                                                 <option value="{{ Crypt::encryptString($item->code) }}">
@@ -91,7 +92,8 @@
                                     </div>
                                     <div class="mb-2">
                                         <label>Type</label>
-                                        <select class="js-example-basic-single col-sm-12" id="model" name="model">
+                                        <select class="js-example-basic-single col-sm-12" id="model" name="model"
+                                            required="">
                                         </select>
                                     </div>
                                     <div class="mb-2">
@@ -193,18 +195,16 @@
             var brandID = $('#brand').val();
             if (brandID) {
                 $.ajax({
-                    url: '/getModel/' + brandID,
+                    url: '/getModel?brandID=' + brandID,
                     type: "GET",
                     dataType: "json",
                     success: function(data) {
                         if (data) {
                             $('#model').empty();
                             $('#model').append('<option hidden>-- Pilih Model --</option>');
-                            $.each(data, function(key, model) {
-                                $('select[name="model"]').append(
-                                    '<option value="' + model.code + '">' +
-                                    model
-                                    .description + '</option>');
+                            $.each(data, function(code, model) {
+                                $('select[name="model"]').append('<option value="' + code + '">' +
+                                    model + '</option>');
                             });
                         } else {
                             $('#model').empty();
@@ -220,19 +220,16 @@
             var cityID = $('#kota').val();
             if (cityID) {
                 $.ajax({
-                    url: '/getBranch/' + cityID,
+                    url: '/getBranch?cityID=' + cityID,
                     type: "GET",
                     dataType: "json",
                     success: function(data) {
                         if (data) {
                             $('#branch').empty();
-                            $('#branch').append(
-                                '<option hidden>-- Pilih Branch --</option>');
-                            $.each(data, function(key, branch) {
-                                $('select[name="branch"]').append(
-                                    '<option value="' + branch.code + '">' +
-                                    branch
-                                    .description + '</option>');
+                            $('#branch').append('<option hidden>-- Pilih Branch --</option>');
+                            $.each(data, function(code, branch) {
+                                $('select[name="branch"]').append('<option value="' + branch + '">' +
+                                    code + '</option>');
                             });
                         } else {
                             $('#branch').empty();
@@ -248,14 +245,14 @@
             var branchID = $('#branch').val();
             if (branchID) {
                 $.ajax({
-                    url: '/getAddress/' + branchID,
+                    url: '/getAddress?branchID=' + branchID,
                     type: "GET",
                     dataType: "json",
                     success: function(data) {
                         if (data) {
                             $('.alamat').show();
-                            $.each(data, function(key, branch) {
-                                $('#alamat').val(branch.address);
+                            $.each(data, function(code, address) {
+                                $('#alamat').val(address);
                                 $('.input-date').show();
                             });
                         } else {
@@ -281,14 +278,14 @@
             var now = today.getHours();
             if (tanggal) {
                 $.ajax({
-                    url: '/getSetTimeBooking/' + branchID,
+                    url: '/getSetTimeBooking?branchID=' + branchID,
                     type: "GET",
                     dataType: "json",
                     success: function(setTime) {
 
                         if (setTime) {
                             $.ajax({
-                                url: '/getTimeBooked/' + tanggal,
+                                url: '/getTimeBooked?selectedDate=' + tanggal,
                                 type: "GET",
                                 dataType: "json",
                                 success: function(booked) {

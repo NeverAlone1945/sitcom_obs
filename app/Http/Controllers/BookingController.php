@@ -29,7 +29,7 @@ class BookingController extends Controller
 
     public function store(Request $request)
     {
-        // validasi form input
+        // Validasi form input
         $request->validate([
             'namalengkap' => 'required',
             'email' => 'required',
@@ -44,12 +44,19 @@ class BookingController extends Controller
             'jam' => 'required',
         ]);
 
+        $brand_code = Crypt::decryptString($request->brand);
+        $brand = Brand::where('code', $brand_code)->first();
+        $model = Modeltype::where('code', $request->model)->first();
+        $branch = Branch::where('code', $request->branch)->first();
+
+        // Cek apakah email dan nomor whatsapp sudah terdaftar atau belum
         $customerCheck = Customer::where([
             'email' => $request->email,
             'whatsapp' => $request->whatsapp
         ])->first();
 
         if (!$customerCheck) {
+            // Jika email dan nomor WA belum terdaftar, simpan ke mst_customer
             $customer = new Customer;
             $customer->name = $request->namalengkap;
             $customer->email = $request->email;
@@ -57,24 +64,20 @@ class BookingController extends Controller
             $customer->save();
             $cust_id = $customer->id;
         } else {
+            // Jika email dan nomor WA sudah terdaftar, ambil id nya
             $cust_id = $customerCheck->id;
         }
 
-        $brand_code = Crypt::decryptString($request->brand);
-        $brand = Brand::where('code', $brand_code)->first();
-        $model = Modeltype::where('code', $request->model)->first();
-        $branch = Branch::where('code', $request->branch)->first();
-
-        // generate booking number
+        // Generate booking number
         $prefix = date('y') . date('m');
         $bookingNumber = $prefix . random_int(100000, 999999);
 
-        // jika hasil generate booking number sudah ada di database, maka ulangi hingga unique
+        // Jika hasil generate booking number sudah ada di database, maka ulangi hingga unique
         while (TrxOnlineBooking::where('booking_number', $bookingNumber)->exists()) {
-            // generate a new booking number
             $bookingNumber = $prefix . random_int(100000, 999999);
         }
 
+        // Simpan ke table trx_online_booking
         $trx = new TrxOnlineBooking;
         $trx->booking_number = $bookingNumber;
         $trx->booking_date = $request->tanggal;
