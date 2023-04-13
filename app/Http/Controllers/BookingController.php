@@ -97,17 +97,18 @@ class BookingController extends Controller
         $trx->email_sending_status = 'f';
         $trx->save();
 
-        $booking = TrxOnlineBooking::where('booking_number', $bookingNumber)->firstOrFail();
+        $booking = TrxOnlineBooking::where('booking_number', $bookingNumber)->first();
         $data = DB::table('trx_online_booking')
             ->leftJoin('mst_customer', 'trx_online_booking.customer_id', '=', 'mst_customer.id')
             ->where('trx_online_booking.booking_number', $booking->booking_number)
-            ->get()->first();
+            ->first();
 
         try {
             Mail::to($request->email)->send(new EmailBookingSuccess($data));
             $booking = TrxOnlineBooking::where('booking_number', $bookingNumber)
                 ->update('email_sending_status', 't');
-        } catch (\Throwable $th) {
+        } catch (\Throwable $e) {
+            report($e);
         }
 
         return redirect()->route('booking.success', ['id' => $bookingNumber]);
@@ -120,16 +121,24 @@ class BookingController extends Controller
         $data = DB::table('trx_online_booking')
             ->leftJoin('mst_customer', 'trx_online_booking.customer_id', '=', 'mst_customer.id')
             ->where('trx_online_booking.booking_number', $booking->booking_number)
-            ->get()->first();
-        return view('pages.guest.booking_success', ['title' => 'Booking Success', 'data' => $data]);
+            ->first();
+        return view('pages.guest.booking_success', ['data' => $data]);
     }
 
-    public function sendEmail()
+    public function sendEmailBooking($id)
     {
+        $booking = TrxOnlineBooking::where('booking_number', $id)->firstOrFail();
+
         $data = DB::table('trx_online_booking')
             ->leftJoin('mst_customer', 'trx_online_booking.customer_id', '=', 'mst_customer.id')
-            ->where('trx_online_booking.booking_number', '2304241819')
-            ->get()->first();
+            ->where('trx_online_booking.booking_number', $booking->booking_number)
+            ->first();
+
         Mail::to($data->email)->send(new EmailBookingSuccess($data));
+
+        $booking = TrxOnlineBooking::where('booking_number', $id)
+            ->update('email_sending_status', 't');
+
+        return back()->with('email', 'Email sudah dikirim. Silahkan cek email anda (cek juga folder spam jika tidak ada di inbox).');
     }
 }

@@ -18,12 +18,15 @@ return new class extends Migration
             $table->string('email', 50)->unique();
             $table->string('whatsapp', 20)->unique();
             $table->string('address')->nullable();
-            $table->string('country_code')->nullable();
-            $table->string('city_code')->nullable();
-            $table->string('district_code')->nullable();
+            $table->string('country')->nullable();
+            $table->string('state')->nullable();
+            $table->string('city')->nullable();
+            $table->string('district')->nullable();
+            $table->string('subdistrict')->nullable();
             $table->string('postal_code')->nullable();
+            $table->timestamp('email_verified_at')->nullable();
             $table->string('otp')->nullable();
-            $table->dateTime('otp_exp', $precision = 0)->nullable();
+            $table->timestamp('otp_exp')->nullable();
             $table->timestamps();
         });
     }

@@ -1,11 +1,12 @@
 @extends('layouts.booking.index')
+@section('title', 'Booking Sukses')
 @section('content')
     <div class="row">
         <div class="col-xl-6 col-sm-12 mx-auto mt-5">
             <div class="card b-r-0 shadow-lg">
                 <div class="card-body">
                     <div class="text-center mb-5">
-                        <img src="{{ asset('assets/images/email-template/success.png') }}" alt="Sukses">
+                        <img src="{{ asset('assets/images/illustrasi/success.png') }}" alt="Sukses">
                     </div>
                     <p>Hi, {{ $data->name }}</p>
                     <p>Terimakasih telah melakukan janji temu / booking order dengan data sebagai berikut:</p>

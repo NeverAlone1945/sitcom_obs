@@ -31,13 +31,22 @@ Route::controller(BookingController::class)->group(function () {
     Route::get('/online-booking', 'index')->name('booking');
     Route::post('/online-booking', 'store')->name('booking.store');
     Route::get('/booking-success/{id}', 'success')->name('booking.success');
-    Route::get('/test-email', 'sendEmail')->name('testemail');
+    Route::get('/send-booking-email/{id}', 'success')->name('booking.email');
 });
 
 Route::controller(RegisterController::class)->group(function () {
     Route::get('/register', 'index')->name('register');
     Route::post('/register', 'store')->name('register.store');
-    Route::get('/register-success/{id}', 'success')->name('register.success');
+    Route::get('/register/{id}', 'success')->name('register.success');
+    Route::get('/resend-email-verification', 'resendEmailVerification');
+    Route::get('/email-verification/{id}', 'emailVerification')->name('emailverification');
+    Route::get('/account-verified/{id}', 'emailVerified')->name('emailverified');
+});
+
+Route::controller(AuthController::class)->group(function () {
+    Route::get('/login', 'index')->name('login');
+    Route::post('/login', 'login')->name('login.process');
+    Route::post('/logout', 'logout')->name('logout');
 });
 
 Route::controller(AjaxController::class)->group(function () {

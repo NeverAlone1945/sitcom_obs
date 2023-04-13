@@ -27,7 +27,7 @@
         <section class="section-space feature-section pt-0">
             <div class="container">
                 <div class="row">
-                    <div class="col-12 mt-4 mb-5">
+                    <div class="col-12 mt-4">
                         <img class="img-fluid for-light" src="{{ asset('assets/images/logo/mc-logo.png') }}"
                             alt="mitracare">
                     </div>

@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('mst_brand', function (Blueprint $table) {
             $table->string('code', 20)->primary();
             $table->string('description', 100)->unique();
+            $table->boolean('service_flag')->after('description');
             $table->timestamps();
         });
     }

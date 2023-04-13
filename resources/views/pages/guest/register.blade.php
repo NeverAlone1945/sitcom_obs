@@ -13,26 +13,39 @@
                             </a>
                         </div>
                         <div class="login-main">
-                            <form class="theme-form">
+                            <form class="needs-validation" action="{{ route('register.store') }}" method="POST">
+                                @csrf
                                 <h4>Buat akun member anda</h4>
                                 <p>Masukkan data diri sesuai kolom di bawah</p>
-                                <h6 class="text-muted mt-4 or">Kontak</h6>
+
+                                @if ($errors->any())
+                                    <div class="alert alert-danger">
+                                        <ul>
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
                                 <div class="form-group">
                                     <label class="col-form-label">Nama Lengkap</label>
-                                    <input class="form-control" type="text" id="namalengkap" name="namalengkap"
-                                        required="" placeholder="John Smith">
+                                    <input class="form-control @error('name') is-invalid @enderror" type="text"
+                                        id="name" name="name" required placeholder="John Smith"
+                                        value="{{ old('name') }}">
                                 </div>
                                 <div class="form-group">
                                     <div class="row g-2">
                                         <div class="col-xl-8">
                                             <label class="col-form-label">Email</label>
-                                            <input class="form-control" type="email" id="email" name="email"
-                                                required="" placeholder="Test@gmail.com">
+                                            <input class="form-control @error('email') is-invalid @enderror" type="email"
+                                                id="email" name="email" required placeholder="Test@gmail.com"
+                                                value="{{ old('email') }}">
                                         </div>
                                         <div class="col-xl-4">
                                             <label class="col-form-label">No Whatsapp</label>
-                                            <input class="form-control" type="number" id="whatsapp" name="whatsapp"
-                                                required="" placeholder="08123456789">
+                                            <input class="form-control @error('whatsapp') is-invalid @enderror"
+                                                type="number" id="whatsapp" name="whatsapp" required
+                                                placeholder="08123456789" value="{{ old('whatsapp') }}">
                                         </div>
                                     </div>
                                 </div>
@@ -41,8 +54,9 @@
                                     <div class="row g-2">
                                         <div class="col-xl-6">
                                             <label class="col-form-label">Provinsi</label>
-                                            <select class="js-example-basic-single col-sm-12" id="provinsi"
-                                                name="provinsi">
+                                            <select
+                                                class="js-example-basic-single col-sm-12 @error('state') is-invalid @enderror"
+                                                id="state" name="state" required>
                                                 <option>-- Pilih Provinsi --</option>
                                                 @foreach ($listProvinsi as $item)
                                                     <option value="{{ $item->id }}">{{ $item->nama }}</option>
@@ -51,8 +65,9 @@
                                         </div>
                                         <div class="col-xl-6">
                                             <label class="col-form-label">Kota / Kabupaten</label>
-                                            <select class="js-example-basic-single col-sm-12" id="kota"
-                                                name="kota"></select>
+                                            <select
+                                                class="js-example-basic-single col-sm-12 @error('city') is-invalid @enderror"
+                                                id="city" name="city" required></select>
                                         </div>
                                     </div>
                                 </div>
@@ -60,13 +75,15 @@
                                     <div class="row g-2">
                                         <div class="col-xl-6">
                                             <label class="col-form-label">Kecamatan</label>
-                                            <select class="js-example-basic-single col-sm-12" id="kecamatan"
-                                                name="kecamatan"></select>
+                                            <select
+                                                class="js-example-basic-single col-sm-12 @error('district') is-invalid @enderror"
+                                                id="district" name="district" required></select>
                                         </div>
                                         <div class="col-xl-6">
                                             <label class="col-form-label">Desa / Kelurahan</label>
-                                            <select class="js-example-basic-single col-sm-12" id="kelurahan"
-                                                name="kelurahan"></select>
+                                            <select
+                                                class="js-example-basic-single col-sm-12 @error('subdistrict') is-invalid @enderror"
+                                                id="subdistrict" name="subdistrict" required></select>
                                         </div>
                                     </div>
                                 </div>
@@ -74,35 +91,22 @@
                                     <div class="row g-2">
                                         <div class="col-xl-3">
                                             <label class="col-form-label">Kode Pos</label>
-                                            <input class="form-control" type="number" id="kodepos" name="kodepos"
-                                                required="" placeholder="12345">
+                                            <input class="form-control @error('postal_code') is-invalid @enderror"
+                                                type="number" id="postal_code" name="postal_code" required
+                                                placeholder="12345">
                                         </div>
                                         <div class="col-xl-9">
                                             <label class="col-form-label">Nama jalan, gedung, no rumah</label>
-                                            <input class="form-control" type="text" id="jalan" name="jalan"
-                                                required="">
+                                            <input class="form-control @error('address') is-invalid @enderror"
+                                                type="text" id="address" name="address" required>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group mb-0">
-                                    <div class="checkbox p-0">
-                                        <input id="checkbox1" type="checkbox">
-                                        <label class="text-muted" for="checkbox1">Agree with<a class="ms-2"
-                                                href="#">Privacy Policy</a></label>
-                                    </div>
-                                    <button class="btn btn-primary btn-block" type="submit">Create Account</button>
+                                <div class="form-group mt-3 mb-0 d-grid">
+                                    <button class="btn btn-dark btn-block" type="submit">Buat Akun</button>
                                 </div>
-                                <h6 class="text-muted mt-4 or">Or signup with</h6>
-                                <div class="social mt-4">
-                                    <div class="btn-showcase"><a class="btn btn-light" href="https://www.linkedin.com/login"
-                                            target="_blank"><i class="txt-linkedin" data-feather="linkedin"></i> LinkedIn
-                                        </a><a class="btn btn-light" href="https://twitter.com/login?lang=en"
-                                            target="_blank"><i class="txt-twitter"
-                                                data-feather="twitter"></i>twitter</a><a class="btn btn-light"
-                                            href="https://www.facebook.com/" target="_blank"><i class="txt-fb"
-                                                data-feather="facebook"></i>facebook</a></div>
-                                </div>
-                                <p class="mt-4 mb-0">Already have an account?<a class="ms-2" href="/">Sign in</a>
+                                <p class="mt-2 mb-0">Sudah memiliki akun?<a class="ms-2 text-danger"
+                                        href="/">Masuk</a>
                                 </p>
                             </form>
                         </div>
@@ -117,16 +121,16 @@
     <script>
         // inisialisasi javascript event handler
         $(document).ready(function() {
-            $('#provinsi').on('change', function() {
-                getKota($(this).val());
+            $('#state').on('change', function() {
+                getCity($(this).val());
             });
 
-            $('#kota').on('change', function() {
-                getKecamatan($(this).val());
+            $('#city').on('change', function() {
+                getDistrict($(this).val());
             });
 
-            $('#kecamatan').on('change', function() {
-                getKelurahan($(this).val());
+            $('#district').on('change', function() {
+                getSubdistrict($(this).val());
             });
         });
     </script>

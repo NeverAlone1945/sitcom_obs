@@ -22,6 +22,8 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vendors/select2.css') }}">
     {{-- Datepicker --}}
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vendors/date-picker.css') }}">
+    {{-- Sweetalert2 --}}
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vendors/sweetalert2.css') }}">
 
     @vite(['public/assets/scss/app.scss'])
 </head>
@@ -43,6 +45,7 @@
     <script src="{{ asset('assets/js/form-wizard/jquery.backstretch.min.js') }}"></script>
     <script src="{{ asset('assets/js/select2/select2.full.min.js') }}"></script>
     <script src="{{ asset('assets/js/select2/select2-custom.js') }}"></script>
+    <script src="{{ asset('assets/js/sweet-alert/sweetalert.min.js') }}"></script>
     <script src="{{ asset('assets/js/datepicker/date-picker/datepicker.js') }}"></script>
     <script src="{{ asset('assets/js/datepicker/date-picker/datepicker.id.js') }}"></script>
     <script src="{{ asset('assets/js/datepicker/date-picker/datepicker.en.js') }}"></script>

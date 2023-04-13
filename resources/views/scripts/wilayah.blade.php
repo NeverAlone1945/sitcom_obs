@@ -1,5 +1,5 @@
 <script>
-    function getKota(id) {
+    function getCity(id) {
         if (id) {
             $.ajax({
                 type: "GET",
@@ -7,22 +7,22 @@
                 dataType: 'JSON',
                 success: function(res) {
                     if (res) {
-                        $("#kota").empty();
-                        $("#kota").append('<option>-- Pilih Kota --</option>');
+                        $("#city").empty();
+                        $("#city").append('<option>-- Pilih Kota --</option>');
                         $.each(res, function(nama, id) {
-                            $("#kota").append('<option value="' + id + '">' + nama + '</option>');
+                            $("#city").append('<option value="' + id + '">' + nama + '</option>');
                         });
                     } else {
-                        $("#kota").empty();
+                        $("#city").empty();
                     }
                 }
             });
         } else {
-            $("#kota").empty();
+            $("#city").empty();
         }
     }
 
-    function getKecamatan(id) {
+    function getDistrict(id) {
         if (id) {
             $.ajax({
                 type: "GET",
@@ -30,23 +30,23 @@
                 dataType: 'JSON',
                 success: function(res) {
                     if (res) {
-                        $("#kecamatan").empty();
-                        $("#kecamatan").append('<option>-- Pilih Kecamatan --</option>');
+                        $("#district").empty();
+                        $("#district").append('<option>-- Pilih Kecamatan --</option>');
                         $.each(res, function(nama, id) {
-                            $("#kecamatan").append('<option value="' + id + '">' + nama +
+                            $("#district").append('<option value="' + id + '">' + nama +
                                 '</option>');
                         });
                     } else {
-                        $("#kecamatan").empty();
+                        $("#district").empty();
                     }
                 }
             });
         } else {
-            $("#kecamatan").empty();
+            $("#district").empty();
         }
     }
 
-    function getKelurahan(id) {
+    function getSubdistrict(id) {
         if (id) {
             $.ajax({
                 type: "GET",
@@ -54,19 +54,19 @@
                 dataType: 'JSON',
                 success: function(res) {
                     if (res) {
-                        $("#kelurahan").empty();
-                        $("#kelurahan").append('<option>-- Pilih Kelurahan --</option>');
+                        $("#subdistrict").empty();
+                        $("#subdistrict").append('<option>-- Pilih Kelurahan --</option>');
                         $.each(res, function(nama, id) {
-                            $("#kelurahan").append('<option value="' + id + '">' + nama +
+                            $("#subdistrict").append('<option value="' + id + '">' + nama +
                                 '</option>');
                         });
                     } else {
-                        $("#kelurahan").empty();
+                        $("#subdistrict").empty();
                     }
                 }
             });
         } else {
-            $("#kelurahan").empty();
+            $("#subdistrict").empty();
         }
     }
 </script>
