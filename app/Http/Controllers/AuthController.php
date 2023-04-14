@@ -34,13 +34,13 @@ class AuthController extends Controller
         $is_member = User::where('email', $request->email)
             ->where('whatsapp', $request->whatsapp)
             ->first();
-        $enc = Crypt::encryptString($is_member->code);
 
         if ($is_member == null) {
             return redirect()->back()->with('status', 'Anda belum terdaftar sebagai member.');
         }
 
         if ($is_member->email_verified_at == null) {
+            $enc = Crypt::encryptString($is_member->code);
             return redirect()->route('login.pending', ['id' => $enc]);
         }
 
@@ -48,6 +48,7 @@ class AuthController extends Controller
         $otp_exp = Carbon::now()->addMinutes(10);
 
         try {
+            $enc = Crypt::encryptString($is_member->code);
             User::where('id', $is_member->id)
                 ->update([
                     'otp' => $otp,

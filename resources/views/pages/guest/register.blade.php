@@ -9,7 +9,7 @@
                         <div>
                             <a class="logo" href="{{ route('index') }}">
                                 <img class="img-fluid for-light" src="{{ asset('assets/images/logo/mc-logo.png') }}"
-                                    alt="mitracare" width="70%">
+                                    alt="mitracare" width="60%">
                             </a>
                         </div>
                         <div class="login-main">

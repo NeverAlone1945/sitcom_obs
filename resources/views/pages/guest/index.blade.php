@@ -29,7 +29,7 @@
                 <div class="row">
                     <div class="col-12 mt-4">
                         <img class="img-fluid for-light" src="{{ asset('assets/images/logo/mc-logo.png') }}"
-                            alt="mitracare">
+                            alt="mitracare" width="40%">
                     </div>
                 </div>
                 <div class="row">

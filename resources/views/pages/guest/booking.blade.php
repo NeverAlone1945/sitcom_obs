@@ -7,12 +7,12 @@
                 <img class="bg-img-cover bg-center" src="{{ asset('assets/images/illustrasi/banner_booking.png') }}"
                     alt="mitracare">
             </div>
-            <div class="col-xl-7">
+            <div class="col-xl-7 p-0">
                 <div class="login-card">
                     <div>
                         <a class="logo" href="/">
                             <img class="img-fluid for-light" src="{{ asset('assets/images/logo/mc-logo.png') }}"
-                                alt="mitracare">
+                                alt="mitracare" width="60%">
                         </a>
                         <div class="login-main">
                             @if ($message = Session::get('success'))
