@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Customer;
+use App\Models\User;
 use App\Models\Provinsi;
 use Illuminate\Http\Request;
 use App\Mail\EmailVerification;
@@ -23,9 +23,9 @@ class RegisterController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => ['required', 'unique:mst_customer'],
-            'email' => ['required', 'unique:mst_customer'],
-            'whatsapp' => ['required', 'unique:mst_customer'],
+            'name' => ['required', 'unique:users'],
+            'email' => ['required', 'unique:users'],
+            'whatsapp' => ['required', 'unique:users'],
             'state' => ['required'],
             'city' => ['required'],
             'district' => ['required'],
@@ -34,17 +34,17 @@ class RegisterController extends Controller
             'address' => ['required'],
         ]);
 
-        // Generate booking number
+        // Generate User Code
         $prefix = 'M' . date('y');
-        $cust_code = $prefix . random_int(1000, 9999);
+        $code = $prefix . random_int(1000, 9999);
 
-        // Jika hasil generate booking number sudah ada di database, maka ulangi hingga unique
-        while (Customer::where('cust_code', $cust_code)->exists()) {
-            $cust_code = $prefix . random_int(100000, 999999);
+        // Jika hasil generate User Code sudah ada di database, maka ulangi hingga unique
+        while (User::where('code', $code)->exists()) {
+            $code = $prefix . random_int(100000, 999999);
         }
 
-        $cust = new Customer;
-        $cust->cust_code    = $cust_code;
+        $cust = new User;
+        $cust->code    = $code;
         $cust->name         = $request->name;
         $cust->email        = $request->email;
         $cust->whatsapp     = $request->whatsapp;
@@ -56,9 +56,9 @@ class RegisterController extends Controller
         $cust->address      = $request->address;
         $cust->save();
 
-        $data = Customer::where('cust_code', $cust_code)->first();
+        $data = User::where('code', $code)->first();
         Mail::to($data->email)->send(new EmailVerification($data));
-        return redirect()->route('register.success', ['id' => Crypt::encryptString($cust_code)]);
+        return redirect()->route('register.success', ['id' => Crypt::encryptString($code)]);
     }
 
     public function success($id)
@@ -73,8 +73,8 @@ class RegisterController extends Controller
 
     public function resendEmailVerification(Request $request)
     {
-        $cust_code = Crypt::decryptString($request->id);
-        $data = Customer::where('cust_code', $cust_code)->first();
+        $code = Crypt::decryptString($request->id);
+        $data = User::where('code', $code)->first();
         try {
             Mail::to($data->email)->send(new EmailVerification($data));
             return response()->json(['msg' => 'success']);
@@ -86,8 +86,11 @@ class RegisterController extends Controller
     public function emailVerification($id)
     {
         try {
-            $cust_code = Crypt::decryptString($id);
-            $updated = Customer::where('cust_code', $cust_code)->update(['email_verified_at' => date('Y-m-d H:i:s')]);
+            $code = Crypt::decryptString($id);
+            $user = User::where('code', $code)->first();
+            if ($user->email_verified_at == null) {
+                $updated = User::where('code', $code)->update(['email_verified_at' => date('Y-m-d H:i:s')]);
+            }
             return redirect()->route('emailverified', ['id' => Crypt::encryptString($id)]);
         } catch (DecryptException $e) {
             abort(404);

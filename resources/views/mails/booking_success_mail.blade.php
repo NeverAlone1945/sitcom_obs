@@ -1,5 +1,5 @@
 @extends('layouts.main.email')
-@section('name')
+@section('content')
     <table border="0" cellpadding="0" cellspacing="0"
         style="padding: 0 30px;background-color: #fff; -webkit-box-shadow: 0px 0px 14px -4px rgba(0, 0, 0, 0.2705882353);box-shadow: 0px 0px 14px -4px rgba(0, 0, 0, 0.2705882353);width: 100%;">
         <tbody>
@@ -9,7 +9,8 @@
                         <tbody>
                             <tr>
                                 <td class="text-center">
-                                    <img src="{{ asset('assets/images/illustrasi/success.png') }}" alt="sukses">
+                                    <img src="{{ $message->embed(public_path() . '/assets/images/logo/mc-logo.png') }}"
+                                        alt="mitracare-logo" width="200">
                                 </td>
                             </tr>
                         </tbody>

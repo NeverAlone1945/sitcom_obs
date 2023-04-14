@@ -11,6 +11,7 @@ class Customer extends Model
 {
     use HasFactory;
     protected $table = 'mst_customer';
+    protected $guarded = ['id'];
     protected $fillable = [
         'cust_code',
         'name',

@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\EmailBookingSuccess;
+use App\Models\User;
 use App\Models\Brand;
 use App\Models\Branch;
-use App\Models\Customer;
 use App\Models\Modeltype;
 use Illuminate\Http\Request;
 use App\Models\TrxOnlineBooking;
+use App\Mail\EmailBookingSuccess;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Contracts\Encryption\DecryptException;
 
 class BookingController extends Controller
 {
@@ -50,22 +51,31 @@ class BookingController extends Controller
         $branch = Branch::where('code', $request->branch)->first();
 
         // Cek apakah email dan nomor whatsapp sudah terdaftar atau belum
-        $customerCheck = Customer::where([
+        $userCheck = User::where([
             'email' => $request->email,
             'whatsapp' => $request->whatsapp
         ])->first();
 
-        if (!$customerCheck) {
+        if (!$userCheck) {
+            // Generate User Code
+            $prefix = 'M' . date('y');
+            $code = $prefix . random_int(1000, 9999);
+
+            // Jika hasil generate User Code sudah ada di database, maka ulangi hingga unique
+            while (User::where('code', $code)->exists()) {
+                $code = $prefix . random_int(100000, 999999);
+            }
             // Jika email dan nomor WA belum terdaftar, simpan ke mst_customer
-            $customer = new Customer;
-            $customer->name = $request->namalengkap;
-            $customer->email = $request->email;
-            $customer->whatsapp = $request->whatsapp;
-            $customer->save();
-            $cust_id = $customer->id;
+            $User = new User;
+            $User->code = $code;
+            $User->name = $request->namalengkap;
+            $User->email = $request->email;
+            $User->whatsapp = $request->whatsapp;
+            $User->save();
+            $cust_id = $User->id;
         } else {
             // Jika email dan nomor WA sudah terdaftar, ambil id nya
-            $cust_id = $customerCheck->id;
+            $cust_id = $userCheck->id;
         }
 
         // Generate booking number
@@ -99,46 +109,50 @@ class BookingController extends Controller
 
         $booking = TrxOnlineBooking::where('booking_number', $bookingNumber)->first();
         $data = DB::table('trx_online_booking')
-            ->leftJoin('mst_customer', 'trx_online_booking.customer_id', '=', 'mst_customer.id')
+            ->leftJoin('users', 'trx_online_booking.customer_id', '=', 'users.id')
             ->where('trx_online_booking.booking_number', $booking->booking_number)
             ->first();
 
         try {
             Mail::to($request->email)->send(new EmailBookingSuccess($data));
             $booking = TrxOnlineBooking::where('booking_number', $bookingNumber)
-                ->update('email_sending_status', 't');
+                ->update(['email_sending_status' => 't']);
         } catch (\Throwable $e) {
             report($e);
         }
 
-        return redirect()->route('booking.success', ['id' => $bookingNumber]);
+        return redirect()->route('booking.success', ['id' => Crypt::encryptString($bookingNumber)]);
     }
 
     public function success($id)
     {
-        $booking = TrxOnlineBooking::where('booking_number', $id)->firstOrFail();
-
-        $data = DB::table('trx_online_booking')
-            ->leftJoin('mst_customer', 'trx_online_booking.customer_id', '=', 'mst_customer.id')
-            ->where('trx_online_booking.booking_number', $booking->booking_number)
-            ->first();
-        return view('pages.guest.booking_success', ['data' => $data]);
+        try {
+            $decrypted = Crypt::decryptString($id);
+            $data = DB::table('trx_online_booking')
+                ->leftJoin('users', 'trx_online_booking.customer_id', '=', 'users.id')
+                ->where('trx_online_booking.booking_number', $decrypted)
+                ->first();
+            return view('pages.guest.booking_success', ['data' => $data]);
+        } catch (DecryptException $e) {
+            abort(404);
+        }
     }
 
-    public function sendEmailBooking($id)
+    public function resendEmailBooking(Request $request)
     {
-        $booking = TrxOnlineBooking::where('booking_number', $id)->firstOrFail();
-
+        $bookingNumber = Crypt::decryptString($request->id);
         $data = DB::table('trx_online_booking')
-            ->leftJoin('mst_customer', 'trx_online_booking.customer_id', '=', 'mst_customer.id')
-            ->where('trx_online_booking.booking_number', $booking->booking_number)
+            ->leftJoin('users', 'trx_online_booking.customer_id', '=', 'users.id')
+            ->where('trx_online_booking.booking_number', $bookingNumber)
             ->first();
+        try {
+            Mail::to($data->email)->send(new EmailBookingSuccess($data));
+            TrxOnlineBooking::where('booking_number', $bookingNumber)
+                ->update(['email_sending_status' => 't']);
 
-        Mail::to($data->email)->send(new EmailBookingSuccess($data));
-
-        $booking = TrxOnlineBooking::where('booking_number', $id)
-            ->update('email_sending_status', 't');
-
-        return back()->with('email', 'Email sudah dikirim. Silahkan cek email anda (cek juga folder spam jika tidak ada di inbox).');
+            return response()->json(['msg' => 'success']);
+        } catch (\Throwable $th) {
+            return response()->json(['msg' => 'error']);
+        }
     }
 }

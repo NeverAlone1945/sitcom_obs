@@ -3,19 +3,17 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Crypt;
+use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
-class EmailVerification extends Mailable
+class EmailOTPLogin extends Mailable
 {
     use Queueable, SerializesModels;
     public $data;
-
     /**
      * Create a new message instance.
      */
@@ -31,7 +29,7 @@ class EmailVerification extends Mailable
     {
         return new Envelope(
             from: new Address('mitracare@terraexpress.id', 'Mitracare'),
-            subject: 'Email Verification',
+            subject: 'Kode OTP Login',
         );
     }
 
@@ -41,10 +39,10 @@ class EmailVerification extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mails.email_verification_mail',
+            view: 'mails.otp_verification_mail',
             with: [
                 'customerName' => $this->data->name,
-                'customerCode' => Crypt::encryptString($this->data->code),
+                'otp' => $this->data->otp
             ]
         );
     }

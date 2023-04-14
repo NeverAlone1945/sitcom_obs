@@ -9,7 +9,7 @@
                         <div>
                             <a class="logo" href="{{ route('index') }}">
                                 <img class="img-fluid for-light" src="{{ asset('assets/images/logo/mc-logo.png') }}"
-                                    alt="mitracare">
+                                    alt="mitracare" width="70%">
                             </a>
                         </div>
                         <div class="login-main">
@@ -105,8 +105,8 @@
                                 <div class="form-group mt-3 mb-0 d-grid">
                                     <button class="btn btn-dark btn-block" type="submit">Buat Akun</button>
                                 </div>
-                                <p class="mt-2 mb-0">Sudah memiliki akun?<a class="ms-2 text-danger"
-                                        href="/">Masuk</a>
+                                <p class="mt-2 mb-0">Sudah jadi member?<a class="ms-2 text-danger"
+                                        href="{{ route('login') }}">Masuk</a>
                                 </p>
                             </form>
                         </div>

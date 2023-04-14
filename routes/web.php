@@ -7,6 +7,7 @@ use App\Models\TrxOnlineBooking;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AjaxController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\RegisterController;
 
@@ -25,13 +26,15 @@ Route::get('/', function () {
     return view('pages.guest.index');
 })->name('index');
 
-
+Route::get('/member', function () {
+    return view('pages.member.index');
+});
 
 Route::controller(BookingController::class)->group(function () {
     Route::get('/online-booking', 'index')->name('booking');
     Route::post('/online-booking', 'store')->name('booking.store');
     Route::get('/booking-success/{id}', 'success')->name('booking.success');
-    Route::get('/send-booking-email/{id}', 'success')->name('booking.email');
+    Route::get('/resend-email-booking', 'resendEmailBooking');
 });
 
 Route::controller(RegisterController::class)->group(function () {
@@ -46,6 +49,10 @@ Route::controller(RegisterController::class)->group(function () {
 Route::controller(AuthController::class)->group(function () {
     Route::get('/login', 'index')->name('login');
     Route::post('/login', 'login')->name('login.process');
+    Route::get('/login/pending-email-verification/{id}', 'pending')->name('login.pending');
+    Route::get('/otp/{id}', 'otpViewPage')->name('otp.viewpage');
+    Route::get('/resend-otp', 'resendOtp');
+    Route::post('/otp-verification', 'otpVerification')->name('otp.verification');
     Route::post('/logout', 'logout')->name('logout');
 });
 

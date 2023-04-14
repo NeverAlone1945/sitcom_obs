@@ -49,7 +49,7 @@
                                 <h5>Login Member</h5>
                                 <p class="mb-0 f-light">Nikmati kemudahan mengakses semua fitur dalam genggaman</p>
                                 <div class="mt-5">
-                                    <a href="" class="btn btn-outline-dark">Masuk</a>
+                                    <a href="{{ route('login') }}" class="btn btn-outline-dark">Masuk</a>
                                 </div>
                             </div>
                         </div>
