@@ -18,7 +18,7 @@
   }
 
   .media-body {
-    flex: unset;
+    // flex: unset;
   }
 }
 
@@ -128,7 +128,8 @@
       position: relative;
 
       @media (max-width: 1399px) {
-        padding: 22px 20px;
+        // padding: 22px 20px;
+        padding: 5px 15px;
       }
 
       .search-full {
@@ -901,7 +902,8 @@
     }
 
     .header-logo-wrapper {
-      width: 150px;
+      // width: 150px;
+      width: 170px;
 
       .toggle-sidebar {
         display: none;
@@ -1294,7 +1296,8 @@
       }
 
       .page-body {
-        margin-top: 135px;
+        // margin-top: 135px;
+        margin-top: 25px;
       }
 
       .sidebar-main-title {

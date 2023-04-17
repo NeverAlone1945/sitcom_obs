@@ -24,7 +24,7 @@ $dark-color : #2c323f;
 $gray-60 :#cccccc;
 $card-body-color : #f9f9fa;
 $transparent-color: transparent;
-$auth-bg-color:#fafafa;
+$auth-bg-color: #fafafa;
 $light : #fdfeff;
 $semi-dark :#59667a;
 $light-text: #999999;
@@ -37,7 +37,7 @@ $pitch-color: #fe8a7d;
 $color-scarpa: #4c5667;
 $color-fiord: #455a64;
 $black : #000;
-$white:#fff;
+$white: #fff;
 $off-white: #F7F6FF;
 $theme-medium-color: #eae8ff;
 $dropdown-border-color: #918E99;
@@ -53,14 +53,14 @@ $google-plus: #c64e40;
 $linkedin: #0077B5;
 
 // soical table 
-$fb-color:#2F84F4;
+$fb-color: #2F84F4;
 $insta-color: #FC971E;
 $pintrest-color: $secondary-color;
 $twitter-color: #57B9F6;
 $youtube-color: #F42F2F;
 
 //error input color start
-$light-body-bg-color:#fafdff;
+$light-body-bg-color: #fafdff;
 
 //fonts
 $font-rubik: Rubik;
@@ -78,7 +78,7 @@ $dark-card-inbox: #323846;
 $dark-small-font-color: #98a6ad;
 $dark-all-font-color: rgba(255, 255, 255, 0.6);
 $light-all-font-color: rgba(255, 255, 255, 0.2);
-$sidebar-submenu-font-color:rgba(255, 255, 255, 0.6);
+$sidebar-submenu-font-color: rgba(255, 255, 255, 0.6);
 $dark-border-color: $dark-body-background;
 $dark-card-border: #374558;
 $dark-editor-document: #2b2b2b;
@@ -258,7 +258,7 @@ $sidebar-arrow-margin-top: 2px;
 $sidebar-arrow-size: 15px;
 $sidebar-arrow-color: $theme-body-font-color;
 $sidebar-open-icon: "\f107";
-$sidebar-close-icon:"\f105";
+$sidebar-close-icon: "\f105";
 $sidebar-icon-font-family: $font-awesome;
 $sidebar-height: calc(100vh - 115px);
 $sidebar-compact-width: 265px;
@@ -291,12 +291,14 @@ $breadcrumb-content: "/";
 $header-left-bg-color : $white;
 $main-header-padding : 27px 22px;
 $main-header-z-index : 8;
-$header-wrapper-padding: 22px 30px;
+// $header-wrapper-padding: 22px 30px;
+$header-wrapper-padding: 5px 15px;
 $header-wrapper-nav-right : 0px;
 $header-wrapper-nav-icon-size : 20px;
 $header-wrapper-nav-icon-color : $theme-font-color;
 $header-wrapper-nav-icon-align : middle;
-$header-size: 136px;
+// $header-size: 136px;
+$header-size: 15px;
 $box-layout-space : 40px;
 
 // widgets variables
