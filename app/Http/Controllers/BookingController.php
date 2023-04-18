@@ -9,6 +9,7 @@ use App\Models\Modeltype;
 use Illuminate\Http\Request;
 use App\Models\TrxOnlineBooking;
 use App\Mail\EmailBookingSuccess;
+use App\Mail\EmailBookingToBranch;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Crypt;
@@ -115,6 +116,7 @@ class BookingController extends Controller
 
         try {
             Mail::to($request->email)->send(new EmailBookingSuccess($data));
+            Mail::to($branch->email)->send(new EmailBookingToBranch($data));
             $booking = TrxOnlineBooking::where('booking_number', $bookingNumber)
                 ->update(['email_sending_status' => 't']);
         } catch (\Throwable $e) {
