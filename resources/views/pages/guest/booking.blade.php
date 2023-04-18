@@ -59,22 +59,34 @@
                                     </div>
                                 </div>
                                 <fieldset>
+                                    @php
+                                        if (Auth::check()) {
+                                            $name = Auth::user()->name;
+                                            $email = Auth::user()->email;
+                                            $whatsapp = Auth::user()->whatsapp;
+                                        } else {
+                                            $name = '';
+                                            $email = '';
+                                            $whatsapp = '';
+                                        }
+                                    @endphp
                                     <div class="mb-2">
                                         <label>Nama Lengkap</label>
                                         <input class="form-control" type="text" id="namalengkap" name="namalengkap"
-                                            placeholder="Nama Lengkap" value="{{ old('namalengkap') }}" required="">
+                                            placeholder="Nama Lengkap" value="{{ $name }}" required="">
                                     </div>
                                     <div class="mb-2">
                                         <label>Email</label>
                                         <input class="form-control" type="email" id="email" name="email"
-                                            placeholder="name@example.com" required="">
+                                            placeholder="name@example.com" value="{{ $email }}" required="">
                                     </div>
                                     <div class="mb-2">
                                         <label>No Handphone / Whatsapp</label>
                                         <input class="form-control" type="number" id="whatsapp" name="whatsapp"
-                                            placeholder="081234567890" required="">
+                                            placeholder="081234567890" value="{{ $whatsapp }}" required="">
                                     </div>
-                                    <div class="f1-buttons">
+                                    <div class="f1-buttons d-flex justify-content-between">
+                                        <a href="/" class="btn btn-danger">Kembali</a>
                                         <button class="btn btn-dark btn-next" type="button">Next</button>
                                     </div>
                                 </fieldset>

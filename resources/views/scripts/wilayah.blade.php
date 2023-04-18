@@ -3,7 +3,7 @@
         if (id) {
             $.ajax({
                 type: "GET",
-                url: "getKota?provID=" + id,
+                url: "/getKota?provID=" + id,
                 dataType: 'JSON',
                 success: function(res) {
                     if (res) {
@@ -26,7 +26,7 @@
         if (id) {
             $.ajax({
                 type: "GET",
-                url: "getKecamatan?kotaID=" + id,
+                url: "/getKecamatan?kotaID=" + id,
                 dataType: 'JSON',
                 success: function(res) {
                     if (res) {
@@ -50,7 +50,7 @@
         if (id) {
             $.ajax({
                 type: "GET",
-                url: "getKelurahan?kecID=" + id,
+                url: "/getKelurahan?kecID=" + id,
                 dataType: 'JSON',
                 success: function(res) {
                     if (res) {

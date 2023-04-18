@@ -1,5 +1,5 @@
 @extends ('layouts.main.index')
-@section('title', 'Verification')
+@section('title', 'Verifikasi')
 @section('content')
     <div class="container-fluid p-0">
         <div class="row m-0">

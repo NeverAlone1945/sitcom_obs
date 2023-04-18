@@ -30,13 +30,18 @@ Route::get('/', function () {
 
 Route::controller(MemberController::class)->group(function () {
     Route::get('/member', 'index')->middleware('auth')->name('member');
+    Route::post('/member', 'updateProfile')->middleware('auth')->name('member.update');
+    Route::get('/member/email-change/{id}', 'editEmail')->middleware('auth')->name('member.editemail');
+    Route::post('/member/email-change', 'emailChangeCheck')->middleware('auth')->name('member.emailchangecheck');
+    Route::get('/member/email-change-verification/{id}', 'emailChangeVerification')->middleware('auth')->name('member.emailchangeverification');
+    Route::get('/member/email-change-success/{id}', 'emailChangeSuccess')->name('member.emailchangesuccess');
 });
 
 Route::controller(BookingController::class)->group(function () {
-    Route::get('/online-booking', 'index')->middleware('guest')->name('booking');
-    Route::post('/online-booking', 'store')->middleware('guest')->name('booking.store');
-    Route::get('/booking-success/{id}', 'success')->middleware('guest')->name('booking.success');
-    Route::get('/resend-email-booking', 'resendEmailBooking')->middleware('guest');
+    Route::get('/online-booking', 'index')->name('booking');
+    Route::post('/online-booking', 'store')->name('booking.store');
+    Route::get('/booking-success/{id}', 'success')->name('booking.success');
+    Route::get('/resend-email-booking', 'resendEmailBooking');
 });
 
 Route::controller(RegisterController::class)->group(function () {
@@ -52,9 +57,9 @@ Route::controller(AuthController::class)->group(function () {
     Route::get('/login', 'index')->middleware('guest')->name('login');
     Route::post('/login', 'login')->middleware('guest')->name('login.process');
     Route::get('/login/pending-email-verification/{id}', 'pending')->middleware('guest')->name('login.pending');
-    Route::get('/otp/{id}', 'otpViewPage')->middleware('guest')->name('otp.viewpage');
-    Route::get('/resend-otp', 'resendOtp')->middleware('guest');
-    Route::post('/otp-verification', 'otpVerification')->middleware('guest')->name('otp.verification');
+    Route::get('/otp/{id}', 'otpViewPage')->name('otp.viewpage');
+    Route::get('/resend-otp', 'resendOtp');
+    Route::post('/otp-verification', 'otpVerification')->name('otp.verification');
     Route::get('/logout', 'logout')->middleware('auth')->name('logout');
 });
 

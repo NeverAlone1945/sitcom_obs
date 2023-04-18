@@ -43,8 +43,8 @@ class RegisterController extends Controller
             $code = $prefix . random_int(100000, 999999);
         }
 
-        $cust = new User;
-        $cust->code    = $code;
+        $cust               = new User;
+        $cust->code         = $code;
         $cust->name         = $request->name;
         $cust->email        = $request->email;
         $cust->whatsapp     = $request->whatsapp;

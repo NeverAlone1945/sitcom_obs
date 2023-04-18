@@ -30,7 +30,7 @@
                             <tr>
                                 <td>
                                     <div class="text-center">
-                                        <a href="{{ route('emailverification', ['id' => $customerCode]) }}"
+                                        <a href="{{ route('member.emailchangeverification', ['id' => $customerCode]) }}"
                                             style="padding: 10px; background-color: #dc3545; color: #fff; display: inline-block; border-radius: 4px; margin-bottom: 18px">Verifikasi
                                             Email Sekarang
                                         </a>

@@ -32,13 +32,24 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
+        $cek_email = User::where('email', $request->email)->first();
+        $cek_wa = User::where('whatsapp', $request->whatsapp)->first();
+
+        if ($cek_email == null && $cek_wa == null) {
+            return redirect()->back()->with('status', 'Anda belum terdaftar sebagai member.');
+        }
+
+        if ($cek_email != null && $cek_wa == null) {
+            return redirect()->back()->with('status', 'Nomor Whatsapp tidak sesuai.');
+        }
+
+        if ($cek_email == null && $cek_wa != null) {
+            return redirect()->back()->with('status', 'Email tidak sesuai.');
+        }
+
         $is_member = User::where('email', $request->email)
             ->where('whatsapp', $request->whatsapp)
             ->first();
-
-        if ($is_member == null) {
-            return redirect()->back()->with('status', 'Anda belum terdaftar sebagai member.');
-        }
 
         if ($is_member->email_verified_at == null) {
             $enc = Crypt::encryptString($is_member->code);
@@ -111,6 +122,9 @@ class AuthController extends Controller
         }
 
         Auth::login($user);
+        User::where('code', $request->cust)->update([
+            'otp_exp' => Carbon::now(),
+        ]);
         return redirect('/member');
     }
 
