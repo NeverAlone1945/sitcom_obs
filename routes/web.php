@@ -33,7 +33,7 @@ Route::controller(MemberController::class)->group(function () {
     Route::post('/member', 'updateProfile')->middleware('auth')->name('member.update');
     Route::get('/member/email-change/{id}', 'editEmail')->middleware('auth')->name('member.editemail');
     Route::post('/member/email-change', 'emailChangeCheck')->middleware('auth')->name('member.emailchangecheck');
-    Route::get('/member/email-change-verification/{id}', 'emailChangeVerification')->middleware('auth')->name('member.emailchangeverification');
+    Route::get('/member/email-change-verification/{id}', 'emailChangeVerification')->name('member.emailchangeverification');
     Route::get('/member/email-change-success/{id}', 'emailChangeSuccess')->name('member.emailchangesuccess');
 });
 

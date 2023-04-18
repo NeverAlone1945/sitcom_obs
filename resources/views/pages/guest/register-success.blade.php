@@ -13,7 +13,7 @@
                         <img src="{{ asset('assets/images/illustrasi/success.png') }}" alt="Sukses">
                         <h4>Registrasi Berhasil</h4>
                         <p>
-                            Kami telah mengirimkan email ke alamat email yang anda daftarkan <br>
+                            Kami telah mengirimkan notifikasi ke alamat yang anda daftarkan <br>
                             Silahkan ikuti intruksi pada email untuk memverifikasi akun anda
                         </p>
 
@@ -25,6 +25,7 @@
                             <li>Silahkan periksa folder spam pada email anda</li>
                         </ol>
                         <button type="button" class="btn btn-sm btn-dark" id="resend">Kirim ulang email</button>
+                        <a href="/" class="btn btn-sm btn-danger pull-right">Kembali ke Beranda</a>
                     </div>
                 </div>
             </div>

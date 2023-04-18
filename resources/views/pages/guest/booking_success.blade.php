@@ -51,6 +51,7 @@
                                 class="text-danger" id="resend">Disini</a> Jika belum menerima email ini. </li>
                         <li>Silahkan login dan lengkapi data profile anda untuk menjadi member kami.</li>
                     </ol>
+                    <a href="/" class="btn btn-danger">Kembali ke Home</a>
                     <a href="{{ route('login') }}" class="btn btn-dark">Login</a>
                 </div>
             </div>

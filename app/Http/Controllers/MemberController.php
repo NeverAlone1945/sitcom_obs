@@ -25,6 +25,7 @@ class MemberController extends Controller
         $member = User::where('name', Auth::user()->name)->first();
         $booking = TrxOnlineBooking::where('customer_id', Auth::user()->id)
             ->orderByDesc('booking_date')
+            ->orderByDesc('id')
             ->get();
         $listProvinsi = Provinsi::all();
         $listKota = Kota::where('id_provinsi', $member->state)->get();

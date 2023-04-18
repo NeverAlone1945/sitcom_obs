@@ -18,6 +18,7 @@
                             Klik Login untuk mengakses lebih banyak fitur dari kami.
                         </p>
                         <a href="{{ route('login') }}" class="btn btn-dark">Login</a>
+                        <a href="/" class="btn btn-danger">Kembali ke Beranda</a>
                     </div>
                 </div>
             </div>

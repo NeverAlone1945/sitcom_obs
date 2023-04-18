@@ -182,7 +182,7 @@
                     </div>
                     <div class="card-body pt-0">
                         <ul>
-                            @foreach ($booking as $item)
+                            @forelse ($booking as $item)
                                 <li class="d-flex">
                                     <div class="activity-dot-primary"></div>
                                     <div class="w-100 ms-3">
@@ -198,7 +198,9 @@
                                         </p>
                                     </div>
                                 </li>
-                            @endforeach
+                            @empty
+                                <span class="text-danger">Belum ada Riwayat Booking</span>
+                            @endforelse
                         </ul>
                     </div>
                 </div>
