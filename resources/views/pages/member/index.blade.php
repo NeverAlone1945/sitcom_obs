@@ -70,7 +70,7 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title">Profil Saya</h5>
-                                <button class="btn-close" type="button" data-bs-dismiss="modal"
+                                <button class="btn-close close" type="button" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
                             <form id="formProfile">
@@ -161,11 +161,23 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button class="btn btn-danger" type="button" data-bs-dismiss="modal">Tutup</button>
+                                    <button class="btn btn-danger close" type="button"
+                                        data-bs-dismiss="modal">Tutup</button>
                                     <button class="btn btn-dark submitbutton" type="submit">Perbarui Profil</button>
                                 </div>
                             </form>
                         </div>
+                    </div>
+                </div>
+
+                {{-- Promo Member --}}
+                <div class="card height-equal">
+                    <div class="card-header card-no-border">
+                        <div class="header-top">
+                            <h5>Promo</h5>
+                        </div>
+                    </div>
+                    <div class="card-body pt-0">
                     </div>
                 </div>
             </div>
@@ -202,6 +214,7 @@
                                 <span class="text-danger">Belum ada Riwayat Booking</span>
                             @endforelse
                         </ul>
+                        {{ $booking->links() }}
                     </div>
                 </div>
             </div>
@@ -215,6 +228,7 @@
     <script>
         // inisialisasi javascript event handler
         $(document).ready(function() {
+            getProfile();
             $('#state').on('change', function() {
                 getCity($(this).val());
             });
@@ -228,7 +242,6 @@
             });
 
             $("#formProfile").on("submit", function(e) {
-                // alert('update');
                 e.preventDefault();
                 $(".submitbutton", this).parent().append(
                     "<span class='cl1'><i class='fas fa-spin fa-compact-disc'></i> Memproses...</span>"
@@ -237,7 +250,6 @@
                 var submitbtn = $(".submitbutton", this);
 
                 $.post("/member", $(this).serialize(), function(res) {
-                    // var data = eval("(" + msg + ")");
                     if (res.success == true) {
                         swal.fire("Berhasil!", res.message, "success").then((
                             value) => {
@@ -252,6 +264,35 @@
                 });
             });
         });
+
+        function getProfile() {
+            $.ajax({
+                type: "GET",
+                url: "/getProfile",
+                dataType: 'JSON',
+                success: function(res) {
+                    if (res.address == null || res.state == null) {
+                        Swal.fire({
+                            title: 'Profil Belum Lengkap!',
+                            text: "Silahkan lengkapi profil terlebih dahulu.",
+                            icon: 'warning',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'Lengkapi Profil',
+                            allowOutsideClick: false
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                var showProfile = new bootstrap.Modal(document.getElementById(
+                                    'showProfile'), {
+                                    backdrop: 'static'
+                                });
+                                showProfile.show();
+                                $(".close").hide();
+                            }
+                        });
+                    }
+                }
+            });
+        }
     </script>
     @include('scripts.wilayah')
 @endsection

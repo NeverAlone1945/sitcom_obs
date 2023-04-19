@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Mail\EmailOTPLogin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use App\Mail\EmailVerification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\RedirectResponse;
@@ -53,6 +54,7 @@ class AuthController extends Controller
 
         if ($is_member->email_verified_at == null) {
             $enc = Crypt::encryptString($is_member->code);
+            Mail::to($request->email)->send(new EmailVerification($is_member));
             return redirect()->route('login.pending', ['id' => $enc]);
         }
 

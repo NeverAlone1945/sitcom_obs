@@ -24,7 +24,7 @@
                             <li>Silahkan periksa folder spam pada email anda</li>
                         </ol>
                         <button type="button" class="btn btn-sm btn-dark" id="resend">Kirim ulang email</button>
-                        <a href="{{ route('login') }}" class="btn btn-sm btn-danger">Masuk</a>
+                        <a href="{{ route('login') }}" class="btn btn-sm btn-danger">Login</a>
                     </div>
                 </div>
             </div>

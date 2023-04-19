@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kota;
+use App\Models\User;
 use App\Models\Branch;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
@@ -10,6 +11,7 @@ use App\Models\Modeltype;
 use Illuminate\Http\Request;
 use App\Models\SetBookingTime;
 use App\Models\TrxOnlineBooking;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 
 class AjaxController extends Controller
@@ -60,5 +62,11 @@ class AjaxController extends Controller
     {
         $booked = TrxOnlineBooking::select('booking_time')->where('booking_date', $request->selectedDate)->get();
         return response()->json($booked);
+    }
+
+    public function getProfile()
+    {
+        $profile = User::find(Auth::user()->id);
+        return response()->json($profile);
     }
 }

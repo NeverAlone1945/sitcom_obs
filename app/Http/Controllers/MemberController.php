@@ -26,12 +26,12 @@ class MemberController extends Controller
         $booking = TrxOnlineBooking::where('customer_id', Auth::user()->id)
             ->orderByDesc('booking_date')
             ->orderByDesc('id')
-            ->get();
+            ->paginate(5);
         $listProvinsi = Provinsi::all();
         $listKota = Kota::where('id_provinsi', $member->state)->get();
         $listKecamatan = Kecamatan::where('id_kota', $member->city)->get();
         $listKelurahan = Kelurahan::where('id_kecamatan', $member->district)->get();
-        // dd($member);
+
         return view('pages.member.index', [
             'member' => $member,
             'booking' => $booking,
